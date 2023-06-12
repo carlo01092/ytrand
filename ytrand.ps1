@@ -54,7 +54,7 @@ if ($Status) {
 	exit
 }
 
-$filter_minutes = ($minutes -gt 0) ? "| select(.duration<=$minutes*60)" : ""
+$filter_minutes = ($minutes -gt 0) ? "| select(.duration != null and .duration<=$minutes*60)" : "| select(.duration != null)"
 $filter_playlist = ($playlist -ne "") ? "$(@($playlist | % { "."""$_"""[]?," }))".TrimEnd(',') : ".[][]"
 
 #Test-Path $db_json
