@@ -46,16 +46,21 @@ if ($Update) {
 	exit
 }
 
-if ($Status) {
+if ($Status) {	
+	$filter_playlist = ($playlist.Length -gt 0) ? "| map(select(" + "$(@($playlist | % { ".key == """"$_"""" or" }))".TrimEnd('or') + "))" : ""
+	$filter_minutes = ($minutes -gt 0) ? "| map(.value |= map(select(.duration != null and .duration <= $minutes*60)))" : "| map(.value |= map(select(.duration != null)))"
+
 	echo "`e[92m"
-	jq -r 'to_entries | map("\(.key) - \(.value | length)") | .[]' $db_json
+	jq -r "to_entries $filter_playlist $filter_minutes | map(`"\(.key) - \(.value | length)`") | .[]" $db_json
+	echo ("-" * 30)
+	jq -r "`"TOTAL: `" + (to_entries $filter_playlist $filter_minutes | map((.value | length)) | add | tostring)" $db_json
 	echo "`e[0m"
 	
 	exit
 }
 
-$filter_minutes = ($minutes -gt 0) ? "| select(.duration != null and .duration<=$minutes*60)" : "| select(.duration != null)"
 $filter_playlist = ($playlist -ne "") ? "$(@($playlist | % { "."""$_"""[]?," }))".TrimEnd(',') : ".[][]"
+$filter_minutes = ($minutes -gt 0) ? "| select(.duration != null and .duration <= $minutes*60)" : "| select(.duration != null)"
 
 #Test-Path $db_json
 $watch = jq -ac "$filter_playlist $filter_minutes" $db_json | Get-Random | ConvertFrom-Json

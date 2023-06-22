@@ -34,7 +34,7 @@ Opens video at chrome's incognito tab by default
   
   * #### randomly select a 5 minute (or less) video from all playlist
 ```powershell
-  ytrand 5
+  ytrand -minutes 5
 ```
 
 * #### randomly select a video from watch later and liked videos playlist (naming refers from actual youtube's playlist name)
@@ -50,5 +50,12 @@ Opens video at chrome's incognito tab by default
 
 * #### Show all playlist & their number of videos
 ```powershell
-  ytrand -Update
+  ytrand -Status
+  
+  # with a 5 minute (or less) videos
+  ytrand -Status -minutes 5
+  
+  # from watch later and liked videos playlist with a 5 minute (or less) videos
+  ytrand -Status "Watch later","Liked videos" 5
+  ytrand -Status -playlist "Watch later","Liked videos" -minutes 5
 ```
