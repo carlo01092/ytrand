@@ -9,7 +9,7 @@ Start decluttering your playlist by *randomizing* what to watch **one** video at
 Opens video at chrome's incognito tab by default
 
 ## Prerequisites
-* [yt-dlp](https://github.com/yt-dlp) - For downloading playlists
+* [yt-dlp](https://github.com/yt-dlp/yt-dlp) - For downloading playlists
 * [jq](https://github.com/jqlang/jq) - Formatting json database
 
 ## Setup
